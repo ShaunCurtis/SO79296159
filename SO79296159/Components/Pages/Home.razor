@@ -1,0 +1,53 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+@rendermode InteractiveServer
+
+<h1>Todo</h1>
+<br />
+
+<ul>
+    @foreach (Task task in tasks)
+    {
+        <li>
+            <input value="task.IsDone" @bind="task.IsDone" type="checkbox" />
+            @task.Name
+            <button @onclick="() => DeleteTask(task)">🗑️</button>
+        </li>
+    }
+    <br />
+    <input value=@name type="text" @oninput="e => name = e.Value.ToString()" />
+    <button @onclick="AddTask">Submit</button>
+</ul>
+
+@code {
+    string? name;
+
+    List<Task> tasks = new List<Task> { };
+
+    private void AddTask()
+    {
+        if (!string.IsNullOrEmpty(name))
+        {
+            tasks.Add(
+                new Task { IsDone = false, Name = name }
+            );
+            name = string.Empty; // Clear the input after adding the task
+        }
+
+        Console.Write(tasks);
+    }
+
+    private void DeleteTask(Task task)
+    {
+        tasks.Remove(task);
+        Console.Write("Hello World");
+    }
+
+    public class Task
+    {
+        public bool IsDone { get; set; }
+        public required string Name { get; set; }
+    }
+}
